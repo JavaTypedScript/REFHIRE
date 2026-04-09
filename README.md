@@ -43,41 +43,73 @@ The architecture supports:
 
 ## Workflow
 
-The following flowchart illustrates the typical user journey through the REFHIRE application:
+The following flowchart illustrates the full application flow and all main feature interactions in REFHIRE:
 
 ```mermaid
-flowchart TD
-    A[User Accesses App] --> B{Authenticated?}
+flowchart LR
+    A[User Opens App] --> B{Authenticated?}
     B -->|No| C[Login/Register via Firebase]
-    C --> D[Dashboard]
-    B -->|Yes| D
+    B -->|Yes| D[Dashboard Entry]
+    C --> D
+
     D --> E{User Role}
     E -->|Candidate| F[Candidate Dashboard]
     E -->|Employee| G[Employee Dashboard]
     E -->|Hiring Manager| H[Hiring Dashboard]
-    
-    F --> I[View Job Recommendations]
-    F --> J[Use Referral Simulator]
-    F --> K[Participate in Shadow Interview]
-    F --> L[Upload Resume for Parsing]
-    
-    G --> M[View Referrals]
-    G --> N[Access Simulator]
-    G --> O[View Dashboard Metrics]
-    
-    H --> P[View Hiring Metrics]
-    H --> Q[Manage Referrals]
-    H --> R[Access Analytics]
-    
-    I --> S[AI Recommendation Engine]
+
+    F --> I[Job Recommendations]
+    F --> J[Referral Simulator]
+    F --> K[Shadow Interview]
+    F --> L[Resume Parser]
+    F --> X[Profile & Settings]
+
+    G --> M[Referral Management]
+    G --> N[Referral Simulator]
+    G --> O[Team Metrics]
+    G --> X
+
+    H --> P[Hiring Metrics]
+    H --> Q[Candidate Analytics]
+    H --> R[Referral Oversight]
+    H --> X
+
+    I --> S[Recommendation Engine]
     J --> T[Referral Simulator Engine]
     K --> U[Shadow Interview Engine]
     L --> V[Resume Parser Engine]
-    
+
+    M --> Y[Referral Data Service]
+    O --> Y
+    P --> Z[Dashboard Analytics Service]
+    Q --> Z
+    R --> Y
+
     S --> W[Firestore Database]
     T --> W
     U --> W
     V --> W
+    Y --> W
+    Z --> W
+
+    subgraph FE[Frontend]
+      F
+      G
+      H
+      X
+    end
+
+    subgraph BE[Backend / AI Engines]
+      S
+      T
+      U
+      V
+      Y
+      Z
+    end
+
+    subgraph DB[Data Layer]
+      W
+    end
 ```
 
 ## Project Structure
